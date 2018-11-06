@@ -57,5 +57,75 @@ ggplot(longstudy, aes(x= week, y = value, color=id))+
   
 ```
 
+##Problem 2
 
+###Reading，adding variable，and summarize total number and unsolved number of homicides
+```{r, message=FALSE}
+homicide = read_csv('/Users/annie/Desktop/data science/Homework/homework5/Homework 5/homicide-data.csv') 
+
+homicide %>% 
+  janitor::clean_names() %>% 
+  mutate(city_state = paste(homicide$city,",",homicide$state))
+
+total_homicides <-
+  homicide %>% 
+  group_by(city) %>% 
+  summarize(total = n(),
+            unsolved = sum(disposition == "Closed without arrest" | disposition == "Open/No arrest")) %>% 
+  ungroup()
+
+  
+```
+
+
+###For the city of Baltimore, MD， estimate the proportion of homicides that are unsolved
+```{r}
+baltimore_total <- subset(total_homicides, city =="Baltimore")$total
+baltimore_unsolved <- subset(total_homicides, city == "Baltimore")$unsolved
+
+prop_ba_unsolved <- prop.test(baltimore_unsolved, baltimore_total) %>% 
+  broom::tidy() %>% 
+  janitor::clean_names() %>% 
+  select(estimate, conf_low, conf_high)
+
+knitr::kable(prop_ba_unsolved)
+
+  
+```
+
+
+###Calculate for each of the cities, and extract both the proportion of unsolved homicides and the confidence interval for each
+
+```{r}
+prop_hom = function(x){
+   prop.test(x$unsolved, x$total) %>% 
+   broom::tidy() %>%  
+   janitor::clean_names() %>% 
+   select(estimate, conf_low, conf_high)
+}
+
+all_prop <- nest(total_homicides, total:unsolved) %>% 
+  mutate(result = map (data, prop_hom)) %>% 
+  unnest()
+
+as.tibble(all_prop)
+
+
+```
+
+###The plot of estimates and CIs for each city
+```{r}
+all_prop %>% 
+  ggplot(aes(x= reorder(city, -estimate), y = estimate))+
+  geom_point()+
+  geom_errorbar(aes(x = city, ymin = conf_low, ymax = conf_high))+
+  labs(
+    title = "The plot of estimates and CIs for each city",
+    x = "City",
+    y = "Estimate with CI"
+  )+
+  theme(legend.position = "bottom", axis.text.x = element_text(angle = 90, hjust = 1), legend.key.width = unit(0.15,'cm'))
+  
+  
+```
 
