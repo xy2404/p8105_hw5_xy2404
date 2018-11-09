@@ -39,6 +39,8 @@ longstudy<-
   separate(read_df, into = c("arms", "id"),sep = "_") 
 ```
 
+First, I combine 20 different data into one dataset. Then I create new variable and make the data tidy. The dataset contains arms, id, week, value variables. And the dataset is stored in the dataframe, which has 160 rows and 4 columns.
+
 ### Make a spaghetti plot showing observations on each subject over time, and comment on differences between groups.
 
 ``` r
@@ -57,6 +59,8 @@ ggplot(longstudy, aes(x= week, y = value, color=id))+
 ```
 
 ![](Homework5_files/figure-markdown_github/unnamed-chunk-2-1.png)
+
+From the plot, we could observe the overall control values are constantly, but the overall experiment values are increase.
 
 Problem 2
 ---------
@@ -97,6 +101,8 @@ total_homicides <-
   ungroup()
 ```
 
+The raw data contains 52179 observations and 12 variables. After cleaning the data, the new data contains 50observations and 3 variables. The new dataset contains city, total, unsolved variables.
+
 ### For the city of Baltimore, MD， estimate the proportion of homicides that are unsolved
 
 ``` r
@@ -114,6 +120,8 @@ knitr::kable(prop_ba_unsolved)
 |   estimate|  conf\_low|  conf\_high|
 |----------:|----------:|-----------:|
 |  0.6455607|  0.6275625|   0.6631599|
+
+For the city of Baltimore, MD, the estimate is 0.646 and the confidence interval is (0.628, 0.663)
 
 ### Calculate for each of the cities, and extract both the proportion of unsolved homicides and the confidence interval for each
 
@@ -163,3 +171,5 @@ all_prop %>%
 ```
 
 ![](Homework5_files/figure-markdown_github/unnamed-chunk-6-1.png)
+
+From this plot, it could observe the different city have the different homicide estimate. The highest homicide estimate is Chicago. The lowest homicide estimate is Richmond

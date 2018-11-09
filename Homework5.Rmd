@@ -2,7 +2,7 @@
 title: "Homework5"
 author: "Annie Yu"
 date: "11/2/2018"
-output: github_document
+output: github_document 
 ---
 
 ```{r setup, message=FALSE}
@@ -40,6 +40,9 @@ longstudy<-
   
 ```
 
+First, I combine 20 different data into one dataset. Then I create new variable and make the data tidy. The dataset contains `r colnames(longstudy)` variables. And the dataset is stored in the dataframe, which has `r nrow(longstudy)` rows and `r ncol(longstudy)` columns.
+
+
 ### Make a spaghetti plot showing observations on each subject over time, and comment on differences between groups.
 ```{r}
 ggplot(longstudy, aes(x= week, y = value, color=id))+
@@ -56,6 +59,9 @@ ggplot(longstudy, aes(x= week, y = value, color=id))+
   theme(legend.position = "bottom")
   
 ```
+
+From the plot, we could observe the overall control values are constantly, but the overall experiment values are increase.
+
 
 ##Problem 2
 
@@ -77,6 +83,7 @@ total_homicides <-
   
 ```
 
+The raw data contains `r dim(homicide)[1]` observations and `r dim(homicide)[2]` variables. After cleaning the data, the new data contains `r dim(total_homicides)[1]`observations and `r dim(total_homicides)[2]` variables. The new dataset contains `r colnames(total_homicides)` variables. 
 
 ###For the city of Baltimore, MD， estimate the proportion of homicides that are unsolved
 ```{r}
@@ -93,6 +100,7 @@ knitr::kable(prop_ba_unsolved)
   
 ```
 
+For the city of Baltimore, MD, the estimate is 0.646 and the confidence interval is (0.628, 0.663)
 
 ###Calculate for each of the cities, and extract both the proportion of unsolved homicides and the confidence interval for each
 
@@ -129,3 +137,4 @@ all_prop %>%
   
 ```
 
+From this plot, it could observe the different city have the different homicide estimate. The highest homicide estimate is Chicago. The lowest homicide estimate is Richmond 
